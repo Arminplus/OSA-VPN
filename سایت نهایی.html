@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSA ARMIN VPN | فیلترشکن پرسرعت و امن</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --dark: #0a0f1a;
+            --dark-2: #111827;
+            --light: #f8fafc;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --gradient: linear-gradient(135deg, #3b82f6, #10b981);
+        }
+        body { background: var(--dark); color: var(--text); overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        nav {
+            position: fixed; top: 0; right: 0; left: 0; z-index: 1000;
+            background: rgba(10, 15, 26, 0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 800; color: #fff; }
+        .logo span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            background: var(--gradient); color: #fff; padding: 0.6rem 1.5rem;
+            border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .hamburger span { width: 25px; height: 3px; background: #fff; border-radius: 2px; transition: 0.3s; }
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 6rem 2rem 4rem; position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.12), transparent 60%);
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; color: var(--primary); margin-bottom: 1.5rem;
+        }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 1.5rem; color: #fff; }
+        .hero h1 .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 2.5rem; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--gradient); color: #fff; padding: 0.9rem 2.2rem; border-radius: 50px;
+            text-decoration: none; font-weight: 700; font-size: 1rem; border: none; cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05); color: #fff; padding: 0.9rem 2.2rem; border-radius: 50px;
+            text-decoration: none; font-weight: 600; font-size: 1rem; border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--primary); }
+        .stats { display: flex; justify-content: center; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat h3 { font-size: 2.5rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat p { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem; }
+        section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .section-title h2 { font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem; }
+        .section-title h2 .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-title p { color: var(--text-muted); font-size: 1.05rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .feature-card {
+            background: var(--dark-2); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem; border-radius: 20px; transition: all 0.4s ease; position: relative; overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient); transform: scaleX(0); transition: transform 0.4s; transform-origin: right;
+        }
+        .feature-card:hover { transform: translateY(-8px); border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-icon {
+            width: 56px; height: 56px; border-radius: 16px; background: rgba(16, 185, 129, 0.1);
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.2rem;
+        }
+        .feature-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 0.6rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; align-items: center; }
+        .price-card {
+            background: var(--dark-2); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px; padding: 2.5rem 2rem; transition: all 0.4s ease; position: relative;
+        }
+        .price-card:hover { transform: translateY(-5px); border-color: rgba(16, 185, 129, 0.3); }
+        .price-card.popular {
+            border-color: var(--primary); background: linear-gradient(180deg, rgba(16, 185, 129, 0.08), var(--dark-2));
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.15);
+        }
+        .popular-badge {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--gradient); color: #fff; padding: 0.35rem 1.2rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 700;
+        }
+        .price-card h3 { font-size: 1.3rem; color: #fff; margin-bottom: 0.5rem; }
+        .price-card .desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem; }
+        .price { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.5rem; }
+        .price .amount { font-size: 2.8rem; font-weight: 800; color: #fff; }
+        .price .currency { font-size: 1rem; color: var(--text-muted); }
+        .price-features { list-style: none; margin-bottom: 2rem; }
+        .price-features li { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0; color: var(--text-muted); font-size: 0.92rem; }
+        .price-features li::before { content: '✓'; color: var(--success); font-weight: 700; font-size: 1.1rem; }
+        .price-features li.disabled { opacity: 0.4; }
+        .price-features li.disabled::before { content: '✗'; color: #ef4444; }
+        .btn-price {
+            width: 100%; background: var(--gradient); color: #fff; padding: 0.9rem; border-radius: 12px;
+            text-decoration: none; font-weight: 700; text-align: center; display: block; border: none; cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-price:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
+        .btn-price.outline { background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; }
+        .btn-price.outline:hover { background: rgba(255, 255, 255, 0.05); box-shadow: none; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .testimonial-card { background: var(--dark-2); border: 1px solid rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; }
+        .stars { color: #fbbf24; margin-bottom: 1rem; font-size: 1.1rem; }
+        .testimonial-card p { color: var(--text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem; }
+        .testimonial-user { display: flex; align-items: center; gap: 0.8rem; }
+        .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
+        .user-info h4 { color: #fff; font-size: 0.95rem; }
+        .user-info span { color: var(--text-muted); font-size: 0.82rem; }
+        .faq-container { max-width: 750px; margin: 0 auto; }
+        .faq-item { background: var(--dark-2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; margin-bottom: 1rem; overflow: hidden; }
+        .faq-question { padding: 1.2rem 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 1rem; color: #fff; font-weight: 600; }
+        .faq-question .arrow { transition: transform 0.3s; font-size: 1.2rem; color: var(--primary); }
+        .faq-item.active .arrow { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-answer p { padding: 0 1.5rem 1.2rem; color: var(--text-muted); font-size: 0.92rem; line-height: 1.8; }
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px;
+            padding: 3.5rem 2rem; text-align: center; margin: 3rem auto; max-width: 1100px;
+        }
+        .cta-banner h2 { font-size: 2rem; color: #fff; margin-bottom: 0.8rem; }
+        .cta-banner p { color: var(--text-muted); margin-bottom: 2rem; }
+        footer { background: var(--dark-2); border-top: 1px solid rgba(255,255,255,0.05); padding: 3rem 2rem 1.5rem; margin-top: 4rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+        .footer-brand .logo { margin-bottom: 1rem; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; max-width: 300px; }
+        .footer-col h4 { color: #fff; font-size: 0.95rem; margin-bottom: 1rem; }
+        .footer-col a { display: block; color: var(--text-muted); text-decoration: none; font-size: 0.88rem; padding: 0.3rem 0; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--primary); }
+        .social-links { display: flex; gap: 0.8rem; margin-top: 1rem; }
+        .social-links a { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; text-decoration: none; transition: all 0.3s; }
+        .social-links a:hover { background: var(--gradient); transform: translateY(-3px); }
+        .footer-bottom { max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; z-index: 0; pointer-events: none; }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; right: -100px; animation: float 8s infinite ease-in-out; }
+        .orb-2 { width: 350px; height: 350px; background: var(--secondary); bottom: 10%; left: -100px; animation: float 10s infinite ease-in-out reverse; }
+        @keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px, 40px); } }
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .hamburger { display: flex; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .stats { gap: 1.5rem; }
+            .stat h3 { font-size: 1.8rem; }
+            .footer-content { grid-template-columns: 1fr; }
+            section { padding: 3rem 1.5rem; }
+            .logo { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="logo">⚡ OSA <span>ARMIN VPN</span></div>
+        <ul class="nav-links">
+            <li><a href="#features">ویژگی‌ها</a></li>
+            <li><a href="#pricing">قیمت‌گذاری</a></li>
+            <li><a href="#testimonials">نظرات</a></li>
+            <li><a href="#faq">سوالات</a></li>
+        </ul>
+        <a href="https://t.me/OSAARMIN_VPNbot" class="nav-cta">خرید اشتراک</a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                سرورهای فعال در ۱۱ کشور
+            </div>
+            <h1>اینترنت <span class="gradient-text">آزاد و امن</span><br>بدون هیچ محدودیتی</h1>
+            <p>با OSA ARMIN VPN، دنیای اینترنت بدون مرز را تجربه کنید. سرورهای پرسرعت، رمزنگاری نظامی و پینگ فوق‌العاده پایین برای تجربه‌ای بی‌نقص.</p>
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn-primary">🚀 شروع کنید</a>
+                <a href="#features" class="btn-secondary">بیشتر بدانید</a>
+            </div>
+            <div class="stats">
+                <div class="stat"><h3>۷۰۰+</h3><p>کاربر فعال</p></div>
+                <div class="stat"><h3>۹۹.۹٪</h3><p>آپ‌تایم</p></div>
+                <div class="stat"><h3>۱۱</h3><p>کشور</p></div>
+                <div class="stat"><h3>۲۴/۷</h3><p>پشتیبانی</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="section-title">
+            <h2>چرا <span class="gradient-text">OSA ARMIN VPN</span>؟</h2>
+            <p>ویژگی‌هایی که ما را از بقیه متمایز می‌کند</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>سرعت بی‌نظیر</h3>
+                <p>با زیرساخت قدرتمند و سرورهای بهینه‌شده، بالاترین سرعت اتصال را تجربه کنید. مناسب برای استریمینگ 4K و گیمینگ.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>امنیت نظامی</h3>
+                <p>رمزنگاری AES-256 سطح نظامی برای حفظ کامل حریم خصوصی شما. هیچ‌کس نمی‌تواند فعالیت شما را ردیابی کند.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>۱۱ کشور</h3>
+                <p>به سرورهای پرسرعت در ۱۱ کشور مختلف دسترسی داشته باشید و از محتوای جهانی بدون محدودیت لذت ببرید.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>چند دستگاهه</h3>
+                <p>یک اشتراک، روی همه دستگاه‌ها. ویندوز، مک، اندروید، iOS و حتی روتر شما — همزمان و بدون محدودیت.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>بدون لاگ</h3>
+                <p>سیاست No-Logs سخت‌گیرانه. ما هیچ اطلاعات فعالیت شما را ذخیره نمی‌کنیم. حریم خصوصی شما در اولویت است.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>پشتیبانی ۲۴/۷</h3>
+                <p>تیم پشتیبانی ما همیشه و در هر ساعت از شبانه‌روز آماده پاسخگویی به سوالات و حل مشکلات شماست.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing">
+        <div class="section-title">
+            <h2>پلن‌های <span class="gradient-text">قیمت‌گذاری</span></h2>
+            <p>پلنی مناسب هر نیاز و بودجه</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>طرح ۵۰ گیگابایت</h3>
+                <p class="desc">یک ماهه — مناسب برای استفاده روزمره</p>
+                <div class="price">
+                    <span class="amount">۳۴۷</span>
+                    <span class="currency">هزار تومان</span>
+                </div>
+                <ul class="price-features">
+                    <li>۵۰ گیگابایت حجم ماهانه</li>
+                    <li>اعتبار ۳۰ روزه</li>
+                    <li>دسترسی به همه سرورها</li>
+                    <li>۲ دستگاه همزمان</li>
+                    <li>سرعت نامحدود</li>
+                    <li>پشتیبانی آنلاین</li>
+                </ul>
+                <a href="https://t.me/OSAARMIN_VPNbot" class="btn-price outline">انتخاب طرح</a>
+            </div>
+            <div class="price-card popular">
+                <div class="popular-badge">🔥 محبوب‌ترین</div>
+                <h3>طرح نامحدود یک‌ماهه</h3>
+                <p class="desc">یک ماهه — بهترین انتخاب برای کاربران حرفه‌ای</p>
+                <div class="price">
+                    <span class="amount">۴۹۰</span>
+                    <span class="currency">هزار تومان</span>
+                </div>
+                <ul class="price-features">
+                    <li>حجم نامحدود</li>
+                    <li>اعتبار ۳۰ روزه</li>
+                    <li>دسترسی به همه سرورها</li>
+                    <li>۵ دستگاه همزمان</li>
+                    <li>سرعت نامحدود</li>
+                    <li>پشتیبانی اولویت‌دار</li>
+                </ul>
+                <a href="https://t.me/OSAARMIN_VPNbot" class="btn-price">انتخاب طرح</a>
+            </div>
+            <div class="price-card">
+                <h3>طرح ۱۰۰ گیگابایت</h3>
+                <p class="desc">سه ماهه — صرفه‌جوترین در درازمدت</p>
+                <div class="price">
+                    <span class="amount">۴۵۰</span>
+                    <span class="currency">هزار تومان</span>
+                </div>
+                <ul class="price-features">
+                    <li>۱۰۰ گیگابایت حجم</li>
+                    <li>اعتبار ۹۰ روزه</li>
+                    <li>دسترسی به همه سرورها</li>
+                    <li>۵ دستگاه همزمان</li>
+                    <li>سرعت نامحدود</li>
+                    <li>پشتیبانی VIP ۲۴/۷</li>
+                </ul>
+                <a href="https://t.me/OSAARMIN_VPNbot" class="btn-price outline">انتخاب طرح</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <div class="section-title">
+            <h2>نظر <span class="gradient-text">کاربران</span> ما</h2>
+            <p>بیش از ۷۰۰ کاربر به ما اعتماد کرده‌اند</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>«عالی‌ترین فیلترشکنی که استفاده کردم. سرعتش فوق‌العادهست و هیچ‌وقت قطع نمی‌کنه. فیلم 4K بدون لگ استریم می‌کنم.»</p>
+                <div class="testimonial-user">
+                    <div class="user-avatar">ع</div>
+                    <div class="user-info"><h4>علی محمدی</h4><span>طراح گرافیک</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>«پشتیبانی فوق‌العاده! نصف شب مشکل داشتم و در کمتر از ۵ دقیقه جواب دادن. واقعاً حرفه‌ای کار می‌کنن.»</p>
+                <div class="testimonial-user">
+                    <div class="user-avatar">س</div>
+                    <div class="user-info"><h4>سارا احمدی</h4><span>برنامه‌نویس</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>«قیمتش منصفانه‌ست و کیفیتش از فیلترشکن‌های خارجی که استفاده می‌کردم بهتره. گیم هم بدون لگ بازی می‌کنم.»</p>
+                <div class="testimonial-user">
+                    <div class="user-avatar">م</div>
+                    <div class="user-info"><h4>محمد رضایی</h4><span>گیمر</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner">
+        <h2>آماده‌اید اینترنت آزاد را تجربه کنید؟</h2>
+        <p>همین الان از طریق ربات تلگرام خرید کنید و متصل شوید</p>
+        <a href="https://t.me/OSAARMIN_VPNbot" class="btn-primary">🚀 خرید از ربات تلگرام</a>
+    </div>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="section-title">
+            <h2>سوالات <span class="gradient-text">متداول</span></h2>
+            <p>پاسخ پرتکرارترین سوالات شما</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>چگونه اشتراک بخرم؟</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer"><p>کافیست به ربات تلگرام ما به آدرس @OSAARMIN_VPNbot مراجعه کنید، طرح مورد نظر را انتخاب کنید و پرداخت را انجام دهید. بلافاصله اشتراک شما فعال می‌شود.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>روی چند دستگاه می‌توانم همزمان استفاده کنم؟</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer"><p>بسته به پلن انتخابی شما، می‌توانید روی ۲ تا ۵ دستگاه همزمان از سرویس استفاده کنید.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>آیا اطلاعات من ذخیره می‌شود؟</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer"><p>خیر. ما سیاست No-Logs سخت‌گیرانه‌ای داریم. هیچ‌گونه اطلاعات فعالیت، تاریخچه مرور یا داده‌های شخصی شما ذخیره نمی‌شود.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>چه دستگاه‌هایی پشتیبانی می‌شوند؟</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer"><p>ویندوز، macOS، اندروید، iOS، Linux و روترها. کانفیگ برای تمام پلتفرم‌ها در ربات تلگرام در دسترس است.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>حجم تمام شد چه کنم؟</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer"><p>در صورت اتمام حجم، می‌توانید طرح جدیدی از ربات خریداری کنید یا طرح نامحدود را انتخاب کنید تا نگران حجم نباشید.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">⚡ OSA <span>ARMIN VPN</span></div>
+                <p>سرویس فیلترشکن پرسرعت و امن با تعهد به حفظ حریم خصوصی کاربران. اینترنت آزاد برای همه.</p>
+                <div class="social-links">
+                    <a href="https://t.me/OSAARMIN_VPNbot" title="ربات تلگرام">🤖</a>
+                    <a href="https://t.me/osavpnarmin" title="کانال تلگرام">📢</a>
+                    <a href="https://instagram.com/arminosa1" title="اینستاگرام">📷</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>محصول</h4>
+                <a href="#features">ویژگی‌ها</a>
+                <a href="#pricing">قیمت‌گذاری</a>
+                <a href="https://t.me/OSAARMIN_VPNbot">خرید اشتراک</a>
+            </div>
+            <div class="footer-col">
+                <h4>پشتیبانی</h4>
+                <a href="#faq">سوالات متداول</a>
+                <a href="https://t.me/OSAARMIN_VPNbot">ربات تلگرام</a>
+                <a href="https://t.me/osavpnarmin">کانال تلگرام</a>
+            </div>
+            <div class="footer-col">
+                <h4>ارتباط با ما</h4>
+                <a href="https://instagram.com/arminosa1">اینستاگرام</a>
+                <a href="https://t.me/osavpnarmin">تلگرام</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© ۲۰۲۶ OSA ARMIN VPN. تمامی حقوق محفوظ است.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10, 15, 26, 0.95)';
+                nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+            } else {
+                nav.style.background = 'rgba(10, 15, 26, 0.8)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        function toggleFAQ(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        function toggleMenu() {
+            const links = document.querySelector('.nav-links');
+            const cta = document.querySelector('.nav-cta');
+            if (links.style.display === 'flex') {
+                links.style.display = 'none';
+                cta.style.display = 'none';
+            } else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '70px';
+                links.style.right = '0';
+                links.style.background = 'rgba(10,15,26,0.98)';
+                links.style.padding = '1rem 2rem';
+                links.style.borderRadius = '0 0 0 16px';
+                links.style.width = '100%';
+                cta.style.display = 'inline-block';
+                cta.style.margin = '0 2rem 1rem 0';
+            }
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card, .price-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
